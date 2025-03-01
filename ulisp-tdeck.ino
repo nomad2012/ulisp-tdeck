@@ -6514,7 +6514,10 @@ int gserial () {
     if (millis() - start > 1000) clrflag(NOECHO);
     if (Serial.available()) {
       char temp = Serial.read();
-      if (temp != '\n' && !tstflag(NOECHO)) Serial.print(temp);
+      if (/* temp != '\n' && */ !tstflag(NOECHO)) {
+        if (temp == '\n') Serial.print('\r');
+        Serial.print(temp);
+      }
       return temp;
     } else {
       Wire1.requestFrom(0x55, 1);
@@ -6837,4 +6840,3 @@ void ulisperror () {
   #endif
   client.stop();
 }
-
